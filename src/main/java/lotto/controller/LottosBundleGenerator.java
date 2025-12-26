@@ -9,16 +9,16 @@ import java.util.List;
 public class LottosBundleGenerator implements LottoGenerator {
     private final List<LottoGenerator> lottosGenerators;
 
-    public LottosBundleGenerator(LottoPrice price, LottoCount manualCount, List<String> manualLottoText) {
-        this(toLottosGenerators(price, manualCount, manualLottoText));
+    public LottosBundleGenerator(LottoPrice price, List<String> manualLottoText) {
+        this(toLottosGenerators(price, manualLottoText));
     }
 
     public LottosBundleGenerator(List<LottoGenerator> lottosGenerators) {
         this.lottosGenerators = lottosGenerators;
     }
 
-    private static List<LottoGenerator> toLottosGenerators(LottoPrice price, LottoCount manualCount, List<String> manualLottoText) {
-        return List.of(new AutoLottoMachine(manualCount.diffFromPrice(price)), new ManualLottoMachine(manualLottoText));
+    private static List<LottoGenerator> toLottosGenerators(LottoPrice price, List<String> manualLottoText) {
+        return List.of(new AutoLottoMachine(new LottoCount(price.count() - manualLottoText.size())), new ManualLottoMachine(manualLottoText));
     }
 
     @Override
